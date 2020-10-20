@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+    php:
+        build: ./docker/php
+        volumes:
+            - ./app:/app
+            - ./docker/php/php.ini:/etc/php.ini
+            - ./docker/php/httpd.conf:/etc/httpd/conf/httpd.conf
+            - ./log/httpd:/var/log/httpd
+        ports:
+            - 80:80

@@ -24,8 +24,6 @@ class TwigHelper
      */
     public function __construct($template_dir = null, $template = null)
     {
-        $this->setDefaultTemplateParams();
-
         $traces = debug_backtrace();
 
         // テンプレートディレクトリを設定
@@ -42,6 +40,9 @@ class TwigHelper
             throw new Exception("The template file must have a {$this->twig_ext} extension.");
         }
         $this->setTemplate($template);
+
+        // デフォルトのテンプレートパラメータをセットする
+        $this->setDefaultTemplateParams();
 
         $this->twig = new Twig_Environment(new Twig_Loader_Filesystem($this->template_dir), array(
             'debug' => true,

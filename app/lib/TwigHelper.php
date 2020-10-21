@@ -8,7 +8,7 @@ class TwigHelper
     private $twig = null;
     private $template_dir = null;
     private $template = null;
-    private $template_params = array();
+    private $template_params = null;
     private $twig_ext = '.twig';
     private $is_render = false;
 
@@ -24,6 +24,8 @@ class TwigHelper
      */
     public function __construct($template_dir = null, $template = null)
     {
+        $this->setDefaultTemplateParams();
+
         $traces = debug_backtrace();
 
         // テンプレートディレクトリを設定
@@ -88,6 +90,21 @@ class TwigHelper
      */
     public function setTemplateParams($template_params)
     {
+        $this->template_params = array_merge($this->template_params, $template_params);
+    }
+
+    /**
+     * デフォルトのテンプレートパラメータをセットする
+     * テンプレートパラメータについて初期状態でリクエスト情報とセッションは扱えるようにする
+     */
+    private function setDefaultTemplateParams()
+    {
+        $template_params = array();
+        // php5.3なのでセッションが開始してるかはsession_id()で判定
+        if (session_id() !== '') {
+            $template_params['session'] = $_SESSION;
+        }
+        $template_params['request'] = $_REQUEST;
         $this->template_params = $template_params;
     }
 
